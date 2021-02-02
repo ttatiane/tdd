@@ -33,8 +33,9 @@ public class Avaliador {
                 return 0; // se 0, retorna 0
             }
         });
+        //maioresList = maioresList.subList(0, 3);
         maioresList = maioresList
-                .subList(0, maioresList.size() > 3 ? 3 : maioresList.size()); //
+                .subList(0, maioresList.size() > 3 ? 3 : maioresList.size());
     }
 
     public void valorMedioDosLances(Leilao leilao) {
