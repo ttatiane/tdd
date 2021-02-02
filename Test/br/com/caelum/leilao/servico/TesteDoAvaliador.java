@@ -5,6 +5,8 @@ import br.com.caelum.leilao.dominio.Leilao;
 import br.com.caelum.leilao.dominio.Usuario;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 public class TesteDoAvaliador {
@@ -139,5 +141,78 @@ public class TesteDoAvaliador {
         System.out.println("Menor: " + licitanteMaria + " " + leiloeiroRenata.getMenorLance());
     }
 
+    @Test
+    public void deveEncontrarOsTresMaioresLances() {
+        // parte1 (cenário 1): leilão com 4 lances, deve encontrar os três maiores
+        Usuario joao = new Usuario("João");
+        Usuario maria = new Usuario("Maria");
+        Leilao leilao = new Leilao("Playstation 3 Novo");
 
+        leilao.propoe(new Lance(joao, 100.0));
+        leilao.propoe(new Lance(maria, 200.0));
+        leilao.propoe(new Lance(joao, 300.0));
+        leilao.propoe(new Lance(maria, 400.0));
+
+        // parte 2: ação
+        Avaliador leiloeiroAmanda = new Avaliador();
+        leiloeiroAmanda.avalia(leilao);
+
+        List<Lance> lancesMaiores = leiloeiroAmanda.getTresMaiores();
+
+        // parte 3 (validação) : comparando a saída com o esperado
+        assertEquals(3, lancesMaiores.size());
+        assertEquals(400, lancesMaiores.get(0).getValor(), 0.0001);
+        assertEquals(300, lancesMaiores.get(1).getValor(), 0.0001);
+        assertEquals(200, lancesMaiores.get(2).getValor(), 0.0001);
+
+        System.out.println("Leilões: 3 " +  lancesMaiores.size());
+        System.out.println("Maiores: 400.0 " +  lancesMaiores.get(0).getValor());
+        System.out.println("Maiores: 300.0 " +  lancesMaiores.get(1).getValor());
+        System.out.println("Maiores: 200.0 " +  lancesMaiores.get(2).getValor());
+    }
+
+    @Test
+    public void deveDevolverTodosLancesCasoNaoHajaNoMinimo2() {
+        // parte1 (cenário 1): leilão com 2 lances, deve devolver apenas os dois lances que encontrou
+        Usuario joao = new Usuario("João");
+        Usuario maria = new Usuario("Maria");
+        Leilao leilao = new Leilao("Playstation 3 Novo");
+
+        leilao.propoe(new Lance(joao, 100.0));
+        leilao.propoe(new Lance(maria, 200.0));
+
+        // parte 2: ação
+        Avaliador leiloeiroRicardo = new Avaliador();
+        leiloeiroRicardo.avalia(leilao);
+
+        List<Lance> lancesMaiores = leiloeiroRicardo.getTresMaiores();
+
+        // parte 3 (validação) : comparando a saída com o esperado
+        assertEquals(2, lancesMaiores.size());
+        assertEquals(200, lancesMaiores.get(0).getValor(), 0.0001);
+        assertEquals(100, lancesMaiores.get(1).getValor(), 0.0001);
+
+        System.out.println("Leilões: 2 " +  lancesMaiores.size());
+        System.out.println("Maiores: 200.0 " +  lancesMaiores.get(0).getValor());
+        System.out.println("Maiores: 100.0 " +  lancesMaiores.get(1).getValor());
+    }
+
+    @Test
+    public void deveDevolverListaVaziaCasaNaoHajaLances() {
+        // parte1 (cenário 1): leilão sem nenhum lance, devolve lista vazia
+        Leilao leilao = new Leilao("Playstation 3 Novo");
+
+        // parte 2: ação
+        Avaliador leiloeiroMarcelo = new Avaliador();
+        leiloeiroMarcelo.avalia(leilao);
+
+        List<Lance> lancesMaiores = leiloeiroMarcelo.getTresMaiores();
+
+        // parte 3 (validação) : comparando a saída com o esperado
+        assertEquals(0, lancesMaiores.size());
+
+        System.out.println("Leilões: 0 " +  lancesMaiores.size());
+    }
 }
+
+
