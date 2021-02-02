@@ -1,10 +1,22 @@
 package br.com.caelum.anobissexto;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 public class AnoBissextoTest {
+
+    @BeforeClass
+    public static void testandoBeforeClass() {
+        System.out.println("before class");
+    }
+
+    @AfterClass
+    public static void testandoAfterClass() {
+        System.out.println("after class");
+    }
 
     @Test
     public void deveRetornarAnoBissexto() {
