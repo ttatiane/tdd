@@ -15,7 +15,13 @@ public class Avaliador {
     private double media;
     private List<Lance> maioresList;
 
+    private void retornaExceptionSeListaVazia(Leilao leilao) {
+        if(leilao.getLances().size() == 0)
+            throw new RuntimeException("Não é possível avaliar um leilão sem lances");
+    }
+    
     public void avalia(Leilao leilao) {
+        retornaExceptionSeListaVazia(leilao);
         for(Lance lance : leilao.getLances()) {
             if(lance.getValor() > maiorDeTodos) maiorDeTodos = lance.getValor();
             if(lance.getValor() < menorDeTodos) menorDeTodos = lance.getValor();
@@ -23,7 +29,9 @@ public class Avaliador {
         pegaOsMaiores(leilao);
     }
 
+
     private void pegaOsMaiores(Leilao leilao) {
+        retornaExceptionSeListaVazia(leilao);
         maioresList = new ArrayList<>(leilao.getLances());
         Collections.sort(maioresList, new Comparator<Lance>() {
             @Override
@@ -39,6 +47,7 @@ public class Avaliador {
     }
 
     public void valorMedioDosLances(Leilao leilao) {
+        retornaExceptionSeListaVazia(leilao);
         double total = 0;
 
         for(Lance lance : leilao.getLances()) {
